@@ -64,7 +64,7 @@
 #include <EEPROM.h>  // We are going to read and write PICC's UIDs from/to EEPROM
 #include <SPI.h>      // RC522 Module uses SPI protocol
 #include <MFRC522.h>   // Library for Mifare RC522 Devices
-#include <Servo.h>
+//#include <Servo.h>
 
 /* Instead of a Relay maybe you want to use a servo
  * Servos can lock and unlock door locks too
@@ -254,7 +254,7 @@ void setup() {
   DEBUG_PRINTLN("");
   
   // attach servo object to the correct PIN
-  DEBUG_PRINTLN("Servo initialized");
+ // DEBUG_PRINTLN("Servo initialized");
 
   // init software RTC with the current time
   rtc.stopRTC();
@@ -561,8 +561,9 @@ void checkOTP() {
   while(inputCode_idx <= 5){
   char key = keypad.getKey();
  
- if (startTime < rtc.getTimestamp()+30){
+ if ( startTime+20 < rtc.getTimestamp()){
    inputCode_idx = 10; //terminate while loop
+   Serial.println("Your time has expired!");
  }
   // a key was pressed
   if (key != NO_KEY) {
@@ -604,7 +605,7 @@ void checkOTP() {
         // code is wrong :(  
         
         else {
-          if(notification == 1){
+         if(notification == 1){
           DEBUG_PRINT("Wrong code... the correct was: ");
           DEBUG_PRINTLN(totpCode);
           }
